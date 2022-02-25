@@ -87,3 +87,9 @@
     .col-11 {width: 91.66%;}
     .col-12 {width: 100%;}
 }
+
+.fieldError {
+    border: 2px solid red !important;
+    color: red;
+    border-radius: 3px;
+  }

@@ -2,12 +2,20 @@
   <div class="cardBox">
     <div class="container tasker">
       <strong> My Task is:</strong>
-      <input type="text" v-model="task" class="taskInput" />
+      <input
+        type="text"
+        :value="task"
+        @input="task = $event.target.value"
+        class="taskInput"
+        :class="$v.task.$error ? 'fieldError' : ''"
+      />
       <button v-on:click="addTask">Add Task</button>
     </div>
   </div>
 </template>
 <script>
+import { required, minLength } from "vuelidate/lib/validators";
+
 export default {
   name: "TaskInput",
   data: () => ({
@@ -15,8 +23,19 @@ export default {
   }),
   methods: {
     addTask() {
+      this.$v.task.$touch();
+      if (this.$v.task.$error) return false;
+
       this.$emit("add-task", this.task);
       this.task = "";
+      this.$v.task.$reset();
+      return true;
+    },
+  },
+  validations: {
+    task: {
+      required,
+      minLength: minLength(5),
     },
   },
 };
