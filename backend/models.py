@@ -1,38 +1,20 @@
-from sqlalchemy import Column, Boolean, Date, ForeignKey, Integer, String
+import datetime
+from sqlalchemy import Column, Boolean, DateTime, ForeignKey, Integer, String, Text
 from database import Base
 from sqlalchemy.orm import relationship
 
 
-class User(Base):
-    __tablename__ = "users"
+class Post(Base):
+    __tablename__ = "post"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String, nullable=False)
-    is_active = Column(Boolean, default=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title = Column(String(50))
+    description = Column(Text(100), nullable=True)
+    content = Column(Text())
+    created_at = Column(DateTime, default=datetime.datetime.now)
+    modified_at = Column(DateTime, default=datetime.datetime.now)
+    # tags =
+    # owner =
 
-    items = relationship("CatalogItem", back_populates="catalog")
-
-
-class CatalogItem(Base):
-
-    __tablename__ = "catalog"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
-    img_url = Column(String, nullable=False)
-    booking_catalog = relationship("Bookings", back_populates="bookings")
-
-
-class Bookings(Base):
-
-    __tablename__ = "bookings"
-
-    id = Column(Integer, primary_key=True, nullable=False)
-    catalog_itme_id = Column(Integer, ForeignKey("catalog.id"))
-    name = Column(String, nullable=False)
-    address = Column(String, nullable=False)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
+    def __str__(self):
+        return self.title
