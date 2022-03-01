@@ -1,5 +1,4 @@
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 import models
@@ -11,7 +10,9 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 sys.path.append(BASE_DIR)
 
 config = context.config
-config.set_main_option("sqlalchemy.url", os.environ["DB_URL"])
+
+if not config.get_main_option("sqlalchemy.url"):
+    config.set_main_option("sqlalchemy.url", os.environ["DB_URL"])
 
 fileConfig(config.config_file_name)
 
