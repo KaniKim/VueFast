@@ -150,3 +150,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+.env
