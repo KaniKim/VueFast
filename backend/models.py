@@ -33,4 +33,5 @@ class User(Base):
     name = Column(String)
     disabled = Column(Boolean, default=False)
     post_id = Column(Integer, ForeignKey("post.id"))
+    hashed_password = Column(String, nullable=False)
     post = relationship("Post", back_populates="post", cascade="all,delete")
