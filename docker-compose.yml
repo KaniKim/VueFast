@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    restart: always
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile-back
+    command: uvicorn main:app --reload
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  front:
+    build: 
+     context: ./frontend
+     dockerfile: Dockerfile-front
+    ports:
+      - 8081:8080
+    volumes:
+      - ./frontend:/frontend
+  db:
+    restart: always
+    image: postgres:11
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fast
+
+volumes:
+  postgres_data:

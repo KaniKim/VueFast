@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from schemas import User
+from database import SessionLocal
 
 import security
 from schemas import Token
@@ -11,8 +12,18 @@ from schemas import Token
 app = FastAPI()
 
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 @app.post("/token", response_model=Token)
-async def login_for_access_token(db: Session, form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(
+    db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+):
     user = security.authenticate_user(db, form_data.username, form_data.password)
 
     if not user:
