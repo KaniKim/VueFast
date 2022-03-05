@@ -35,6 +35,9 @@
               </v-col>
             </v-row>
           </tbody>
+          <template v-slot:no-data>
+            <v-btn color="primary" @click="fetchPostList">Reset</v-btn>
+          </template>
         </v-table>
       </v-col>
     </v-row>
@@ -156,16 +159,18 @@
   </v-container>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   name: "PostList",
   data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
-      { text: "제 목", value: "calories" },
-      { text: "요 약", value: "fat" },
-      { text: "수정일", value: "carbs" },
-      { text: "작성자", value: "protein" },
+      { text: "제 목", value: "title" },
+      { text: "요 약", value: "description" },
+      { text: "수정일", value: "modified_at" },
+      { text: "작성자", value: "owner" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     posts: [
@@ -208,6 +213,10 @@ export default {
     },
   }),
 
+  created() {
+    this.fetchPostList();
+  },
+
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
@@ -224,6 +233,20 @@ export default {
   },
 
   methods: {
+    fetchPostList() {
+      console.log("fetchPostList()...");
+
+      axios
+        .get("/api/post/list/")
+        .then((res) => {
+          console.log("POST GET RES", res);
+          this.posts = res.data;
+        })
+        .catch((err) => {
+          console.log("POST GET ERR.RESPONSE", err.response);
+          alert(err.response.status + " " + err.response.statusText);
+        });
+    },
     editItem(item) {
       this.editedIndex = this.posts.indexOf(item);
       this.editedItem = Object.assign({}, item);
