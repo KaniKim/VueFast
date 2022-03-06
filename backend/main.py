@@ -1,14 +1,16 @@
 import datetime
+import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from schemas import User
-from database import SessionLocal
-
 import security
-from schemas import Token
+from sqlalchemy.orm import Session
+
+from database import SessionLocal
+from schemas import Token, Post, User
+import models
 
 app = FastAPI()
 
@@ -23,6 +25,7 @@ def get_db():
 
 origins = [
     "http://localhost",
+    "http://localhost:8000",
     "http://localhost:8080",
 ]
 
@@ -64,3 +67,25 @@ async def read_users_me(current_user: User = Depends(security.get_current_active
 @app.get("/users/me/itmes/")
 async def read_own_items(current_user: User = Depends(security.get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.user_id}]
+
+
+@app.get("/api/post/list/", response_model=Post)
+async def get_post_list(db: Session = Depends(get_db)):
+    post = db.query(models.Post).all()
+    return post
+
+
+@app.post("/api/post/detail", response_model=Post)
+async def post_post(post: Post, db: Session = Depends(get_db)):
+    post = models.Post(
+        title=post.title,
+        description=post.description,
+        content=post.content,
+        created_at=datetime.datetime.now(),
+        modified_at=datetime.datetime.now(),
+        owner_id=str(uuid.uuid4()),
+    )
+    db.add(post)
+    db.commit()
+
+    return post

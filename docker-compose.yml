@@ -6,11 +6,11 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile-back
-    command: uvicorn main:app --reload
+    command: uvicorn main:app --reload --host 0.0.0.0
     volumes:
       - ./backend:/backend
     ports:
-      - "8080:8080"
+      - "8000:8000"
     depends_on:
       - db
   front:
@@ -18,7 +18,7 @@ services:
      context: ./frontend
      dockerfile: Dockerfile-front
     ports:
-      - 8081:8080
+      - 8080:8080
     volumes:
       - ./frontend:/frontend
   db:
@@ -31,6 +31,18 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=fast
+    ports:
+      - 5432:5432
 
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: kanikim@email.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+    restart: unless-stopped
 volumes:
   postgres_data:

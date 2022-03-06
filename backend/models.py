@@ -1,7 +1,14 @@
 import datetime
-from sqlalchemy import Column, ARRAY, Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ARRAY, Boolean, DateTime, ForeignKey, Integer, String, Table, Text
 from database import Base
 from sqlalchemy.orm import relationship
+
+association_table = Table(
+    "association",
+    Base.metadata,
+    Column("post_id", Integer, ForeignKey("post.id")),
+    Column("tags_id", Integer, ForeignKey("tags.id")),
+)
 
 
 class Post(Base):
@@ -13,8 +20,10 @@ class Post(Base):
     content = Column(Text())
     created_at = Column(DateTime, default=datetime.datetime.now)
     modified_at = Column(DateTime, default=datetime.datetime.now)
-    tags = relationship("Tags", back_populates="tags")
-    owner = relationship("User", back_populates="user")
+
+    tags = relationship("Tags", secondary=association_table)
+
+    owner_id = Column(Integer, ForeignKey("user.id"))
 
 
 class Tags(Base):
@@ -22,7 +31,6 @@ class Tags(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     tag = ARRAY(String(100), as_tuple=False, dimensions=None, zero_indexes=False)
-    post_id = Column(Integer, ForeignKey("post.id"))
 
 
 class User(Base):
@@ -31,7 +39,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String, index=True, nullable=False)
     name = Column(String)
-    disabled = Column(Boolean, default=False)
-    post_id = Column(Integer, ForeignKey("post.id"))
     hashed_password = Column(String, nullable=False)
-    post = relationship("Post", back_populates="post", cascade="all,delete")
+    disabled = Column(Boolean, default=False)
+
+    post_id = Column(Integer, ForeignKey("post.id"))
+    post = relationship("Post", backref="post", foreign_keys=[post_id])
