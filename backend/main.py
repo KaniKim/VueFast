@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -69,9 +70,16 @@ async def read_own_items(current_user: User = Depends(security.get_current_activ
     return [{"item_id": "Foo", "owner": current_user.user_id}]
 
 
-@app.get("/api/post/list/", response_model=Post)
+@app.get("/api/post/list/", response_model=List[Post])
 async def get_post_list(db: Session = Depends(get_db)):
     post = db.query(models.Post).all()
+    return post
+
+
+@app.get("/api/post/detail/{pk}", response_model=Post)
+async def post_post(post: Post, pk: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).filter(models.Post.id == pk).first()
+
     return post
 
 

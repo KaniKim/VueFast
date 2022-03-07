@@ -17,11 +17,9 @@
               <v-col cols="12" lg="12" outlined>
                 <tr v-for="post in posts" :key="post">
                   <v-row aling="center" justify="center">
-                    <v-col cols="2">{{ post.name }}</v-col>
-                    <v-col cols="2">{{ post.calories }}</v-col>
-                    <v-col cols="2">{{ post.fat }}</v-col>
-                    <v-col cols="2">{{ post.carbs }}</v-col>
-                    <v-col cols="2">{{ post.protein }}</v-col>
+                    <v-col cols="4">{{ post.title }}</v-col>
+                    <v-col cols="3">{{ post.description }}</v-col>
+                    <v-col cols="3">{{ post.content }}</v-col>
                     <v-col cols="1" @click="editItem(post)">
                       <v-icon small class="mr-2"> mdi-pencil </v-icon>
                     </v-col>

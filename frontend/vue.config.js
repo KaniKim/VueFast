@@ -47,7 +47,7 @@ if (process.env.NODE_ENV === "production") {
     },
 
     devServer: {
-      proxy: "http://127.0.0.1:8000"
+      proxy: "http://backend:8000"
     },
 
     configureWebpack: {
