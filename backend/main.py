@@ -10,7 +10,7 @@ import security
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
-from schemas import Token, Post, User
+from schemas import Token, Post, User, PostDetail
 import models
 
 app = FastAPI()
@@ -37,6 +37,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.router.redirect_slashes = False
 
 
 @app.post("/token", response_model=Token)
@@ -76,14 +78,14 @@ async def get_post_list(db: Session = Depends(get_db)):
     return post
 
 
-@app.get("/api/post/detail/{pk}", response_model=Post)
-async def post_post(post: Post, pk: int, db: Session = Depends(get_db)):
+@app.get("/api/post/detail/{pk}", response_model=PostDetail)
+async def post_post(pk: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == pk).first()
 
     return post
 
 
-@app.post("/api/post/detail", response_model=Post)
+@app.post("/api/post/detail", response_model=PostDetail)
 async def post_post(post: Post, db: Session = Depends(get_db)):
     post = models.Post(
         title=post.title,

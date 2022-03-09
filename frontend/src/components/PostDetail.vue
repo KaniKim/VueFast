@@ -9,7 +9,7 @@
     <v-row align="start" justify="center">
       <v-col cols="12" sm="8" lg="7">
         <v-card class="pa-2" tile>
-          <p>{{ post.content }}</p>
+          <p style="white-space: pre-wrap">{{ post.content }}</p>
           <div>
             <strong>Tags:</strong>
             <v-chip
@@ -25,12 +25,13 @@
       </v-col>
       <v-col cols="12" sm="4" lg="3">
         <v-card class="pa-2" tile>
-          One of three columns <br />
-          Hello
+          <p>prev post</p>
+          <h2 @click="fetchPostDetail(post.prev.id)">{{ post.prev.title }}</h2>
         </v-card>
-        <br />
-        <v-card class="pa-2" tile> One of three columns </v-card>
-        <br />
+        <v-card class="pa-2" tile>
+          <p>next post</p>
+          <h2 @click="fetchPostDetail(post.next.id)">{{ post.next.title }}</h2>
+        </v-card>
         <v-card class="pa-2" tile>
           <h2>Tag Cloud</h2>
           <v-chip class="ma-2" color="green" text-color="white">
@@ -59,10 +60,10 @@ export default {
   },
 
   methods: {
-    fetchPostDetail() {
+    fetchPostDetail(postId) {
       console.log("fetchPostDetail()...");
       axios
-        .get("/api/post/detail/2/")
+        .get(`/api/post/detail/${postId}`)
         .then((res) => {
           console.log("POST DETAIL GET RES", res), (this.post = res.data);
         })

@@ -12,6 +12,13 @@ class Post(BaseModel):
         orm_mode = True
 
 
+class PostDetail(Post):
+    id: int
+    modified_at: datetime.datetime
+    created_at: datetime.datetime
+    owner_id: str
+
+
 class Tags(BaseModel):
     id: int
     tag: List[str]
