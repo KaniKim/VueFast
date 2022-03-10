@@ -1,9 +1,9 @@
 import datetime
 from typing import Optional
 
-import crud
-from schemas import TokenData, User
-from database import SessionLocal
+import domain.crud as crud
+from domain.schemas import TokenData, User
+from models.database import SessionLocal
 
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status

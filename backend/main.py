@@ -6,12 +6,12 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-import security
+import security.security as security
 from sqlalchemy.orm import Session
 
-from database import SessionLocal
-from schemas import Token, Post, User, PostDetail
-import models
+from models.database import SessionLocal
+from domain.schemas import Token, Post, User, PostDetail
+import models.models as models
 
 app = FastAPI()
 

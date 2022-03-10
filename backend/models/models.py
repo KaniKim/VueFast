@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy import Column, ARRAY, Boolean, DateTime, ForeignKey, Integer, String, Table, Text
-from database import Base
+from .database import Base
 from sqlalchemy.orm import relationship
 
 association_table = Table(
