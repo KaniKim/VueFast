@@ -33,6 +33,13 @@ if (process.env.NODE_ENV === "production") {
         filename: "post_detail.html",
         title: "VueDjangoPhoto/post_detail.html",
         minify: false
+      },
+      post_input: {
+        template: "public/index.html",
+        entry: "src/pages/main_post_input.js",
+        filename: "post_input.html",
+        title: "VueDjangoPhoto/post_input.html",
+        minify: false
       }
     }
   });
@@ -81,6 +88,13 @@ if (process.env.NODE_ENV === "production") {
         entry: "src/pages/main_post_detail.js",
         filename: "post_detail.html",
         title: "VueDjangoPhoto/post_detail.html",
+        minify: false
+      },
+      post_input: {
+        template: "public/index.html",
+        entry: "src/pages/main_post_input.js",
+        filename: "post_input.html",
+        title: "VueDjangoPhoto/post_input.html",
         minify: false
       }
     }

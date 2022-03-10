@@ -7,6 +7,7 @@
       <v-btn text flat href="/" v-text="'Home'"></v-btn>
       <v-btn text href="/post_list.html" v-text="'PostList'"></v-btn>
       <v-btn text href="/post_detail.html" v-text="'PostDetail'"></v-btn>
+      <v-btn text href="/post_input.html" v-text="'PostInput'"></v-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn text v-bind="props">
