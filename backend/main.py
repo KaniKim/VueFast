@@ -3,15 +3,15 @@ from typing import List
 import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 import security.security as security
 from sqlalchemy.orm import Session
 
 from models.database import SessionLocal
-from domain.schemas import Token, Post, User, PostDetail
+from domain.schemas import Token, Post, User, PostDetail, PostMeta
 import models.models as models
+from domain.crud import get_next_post, get_prev_post
 
 app = FastAPI()
 
@@ -78,9 +78,13 @@ async def get_post_list(db: Session = Depends(get_db)):
     return post
 
 
-@app.get("/api/post/detail/{pk}", response_model=PostDetail)
+@app.get("/api/post/detail/{pk}", response_model=PostMeta)
 async def post_post(pk: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == pk).first()
+    prev_post = get_prev_post(db=db, id=pk)
+    next_post = get_next_post(db=db, id=pk)
+    post["prev"] = prev_post
+    post["next"] = next_post
 
     return post
 

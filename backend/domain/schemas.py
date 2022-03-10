@@ -19,6 +19,12 @@ class PostDetail(Post):
     owner_id: str
 
 
+class PostMeta(BaseModel):
+    post: PostDetail
+    prev: Post
+    next: Post
+
+
 class Tags(BaseModel):
     id: int
     tag: List[str]
