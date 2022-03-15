@@ -17,7 +17,11 @@
               ></v-textarea>
             </v-col>
             <v-col cols="8" lg="8">
-              <v-text-field v-model="currentInput" @keypress.enter="saveChip">
+              <v-text-field
+                label="tags"
+                v-model="currentInput"
+                @keypress.enter="saveChip"
+              >
               </v-text-field>
               <v-chip-group>
                 <v-chip v-for="(chip, i) of chips" :key="chip.label"
@@ -29,6 +33,11 @@
               </v-chip-group>
             </v-col>
           </v-row>
+          <br />
+          <br />
+          <v-col align="right" justify="right">
+            <v-btn depressed elevation="2">Submit</v-btn>
+          </v-col>
         </v-card>
       </v-col>
     </v-row>
@@ -52,6 +61,7 @@ export default {
     saveChip() {
       const { chips, currentInput, set } = this;
       ((set && chips.indexOf(currentInput) === -1) || !set) &&
+        currentInput != "" &&
         chips.push(currentInput);
       this.currentInput = "";
     },
