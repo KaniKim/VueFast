@@ -22,7 +22,6 @@ def upgrade():
         sa.Column("post_id", sa.Integer, sa.ForeignKey("post.id")),
         sa.Column("tags_id", sa.Integer, sa.ForeignKey("tags.id")),
     )
-    op.drop_column("tags", "post_id")
 
 
 def downgrade():

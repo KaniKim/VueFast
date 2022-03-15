@@ -29,7 +29,7 @@ def upgrade():
     op.create_table(
         "tags",
         sa.Column("id", sa.Integer(), primary_key=True, index=True, autoincrement=True),
-        sa.ARRAY(sa.String(100), as_tuple=False, dimensions=None, zero_indexes=False),
+        sa.String("tag", 100),
         sa.Column("post_id", sa.Integer(), sa.ForeignKey("post.id")),
     )
     op.create_table(
@@ -43,6 +43,6 @@ def upgrade():
 
 
 def downgrade():
+    op.drop_table("user")
     op.drop_table("post")
     op.drop_table("tags")
-    op.drop_table("user")

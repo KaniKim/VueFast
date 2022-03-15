@@ -30,7 +30,8 @@ class Tags(Base):
     __tablename__ = "tags"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    tag = ARRAY(String(100), as_tuple=False, dimensions=None, zero_indexes=False)
+    tag = String(100)
+    post_id = Column(Integer, ForeignKey("post.id"))
 
 
 class User(Base):

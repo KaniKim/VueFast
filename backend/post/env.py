@@ -9,7 +9,7 @@ from alembic import context
 # access to the values within the .ini file in use.
 config = context.config
 
-import models
+import models.models as models
 import os, sys
 from dotenv import load_dotenv
 

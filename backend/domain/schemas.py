@@ -3,10 +3,16 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
+class Tags(BaseModel):
+    id: int
+    tag: str
+
+
 class Post(BaseModel):
     title: str
     description: str = None
     content: str = None
+    tags: List[str]
 
     class Config:
         orm_mode = True
@@ -18,16 +24,14 @@ class PostDetail(Post):
     created_at: datetime.datetime
     owner_id: str
 
+    class Config:
+        orm_mode = True
+
 
 class PostMeta(BaseModel):
     post: PostDetail
     prev: Post
     next: Post
-
-
-class Tags(BaseModel):
-    id: int
-    tag: List[str]
 
 
 class User(BaseModel):

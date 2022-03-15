@@ -91,7 +91,7 @@ async def post_post(pk: int, db: Session = Depends(get_db)):
 
 @app.post("/api/post/detail", response_model=PostDetail)
 async def post_post(post: Post, db: Session = Depends(get_db)):
-    post = models.Post(
+    model_post = models.Post(
         title=post.title,
         description=post.description,
         content=post.content,
@@ -99,7 +99,13 @@ async def post_post(post: Post, db: Session = Depends(get_db)):
         modified_at=datetime.datetime.now(),
         owner_id=str(uuid.uuid4()),
     )
-    db.add(post)
+
+    db.add(model_post)
     db.commit()
+
+    for tag in post.tags:
+        model_tag = models.Tags(post_id=model_post.id, tag=tag)
+        db.add(model_tag)
+        db.commit()
 
     return post
