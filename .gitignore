@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 .DS_Store
 node_modules
+./frontend/node_modules
 /dist
 
 

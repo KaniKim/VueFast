@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "vue-project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "@vue/cli": "^5.0.1",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "core-js": "^3.8.3",
+    "js-cookie": "^3.0.1",
+    "qs": "^6.10.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vuelidate": "^0.7.7",
     "vuetify": "npm:@vuetify/nightly@next",
     "vuex": "^4.0.0",
     "webfontloader": "^1.0.0"
@@ -27,20 +29,15 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.14.0",
+    "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-vue": "^8.5.0",
-    "html-loader": "^3.1.0",
-    "html-webpack-plugin": "^5.5.0",
+    "eslint-plugin-vue": "^8.7.1",
     "prettier": "^2.4.1",
     "sass": "^1.38.0",
     "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "~2.4.6",
+    "vue-cli-plugin-vuetify": "~2.4.8",
     "vuetify-loader": "^2.0.0-alpha.0"
   },
   "eslintConfig": {
