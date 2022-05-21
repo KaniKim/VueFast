@@ -1,6 +1,6 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
+from fastapi import FastAPI
+from api.user import user_router
 
 app = FastAPI()
-app.include_router()
+
+app.include_router(user_router)
