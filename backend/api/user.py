@@ -1,11 +1,20 @@
-from ..repository.user import UserRepository
-from ..services.security import Password
+from repository.user import UserRepository
+from services.security import Password
+from . import SessionLocal
 
 from pydantic import BaseModel
 from fastapi import APIRouter
 
 user_repo = UserRepository()
-user_router = APIRouter(prefix="/user", tags=["users"])
+router = APIRouter(prefix="/user", tags=["users"])
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class UserRequest(BaseModel):
@@ -15,11 +24,9 @@ class UserRequest(BaseModel):
     plain_password: str
 
 
-@user_router.get("/{user_id}")
+@router.get("/{user_id}")
 async def get_user(user_id: str):
-    import ipdb
 
-    ipdb.set_trace()
     user = user_repo.get_user_by_id(user_id)
 
     if not user:
@@ -28,14 +35,9 @@ async def get_user(user_id: str):
     return user
 
 
-@user_router.post("/")
+@router.post("/")
 async def create_user(user_info: UserRequest):
     plain_password = user_info.plain_password
     hashed_password = Password().get_password_hash(password=plain_password)
 
-    user_repo.create_user(
-        email=user_info.email,
-        hashed_password=hashed_password,
-        name=user_info.name,
-        nickname=user_info.nickname,
-    )
+    user_repo.create_user(email=user_info.email, hashed_password=hashed_password, name=user_info.name, nickname=user_info.nickname, db=get_db())

@@ -11,10 +11,8 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-SQLALCHEMY_DATABASE_URL = Settings.SQLALCHEMY_DATABASE_URL
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+SQLALCHEMY_DATABASE_URL = Settings().SQLALCHEMY_DATABASE_URL
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

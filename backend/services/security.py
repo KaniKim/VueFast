@@ -6,7 +6,7 @@ from pydantic import BaseSettings, BaseModel
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
-from ..repository.user import UserRepository
+from repository.user import UserRepository
 
 
 class Settings(BaseSettings):
@@ -18,9 +18,9 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-SECRET_KEY = Settings.SECRET_KEY
-ALGORITHM = Settings.ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES = Settings.ACCESS_TOKEN_EXPIRE_MINUTES
+SECRET_KEY = Settings().SECRET_KEY
+ALGORITHM = Settings().ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = Settings().ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 class Token(BaseModel):
@@ -32,7 +32,7 @@ class TokenData(BaseModel):
     username: str | None = None
 
 
-pwd_context = CryptContext(schemas=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -60,9 +60,7 @@ class Password:
 class Auth:
     user_repo = UserRepository()
 
-    def create_access_token(
-        self, data: dict, expires_delta: datetime.timedelta | None = None
-    ):
+    def create_access_token(self, data: dict, expires_delta: datetime.timedelta | None = None):
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.datetime.utcnow() + expires_delta

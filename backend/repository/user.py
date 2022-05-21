@@ -2,24 +2,14 @@ import datetime
 import uuid
 from abc import ABC
 
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from ..models.user import UserModel
-from ..domain.user import User
-from . import SessionLocal
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from models.user import UserModel
+from domain.user import User
 
 
 class BaseUserRepository(ABC):
-    def get_user(self, email: str, db: Session = Depends(get_db)) -> User:
+    def get_user(self, email: str, db: Session) -> User:
         pass
 
     def create_user(
@@ -28,16 +18,16 @@ class BaseUserRepository(ABC):
         hashed_password: str,
         name: str,
         nickname: str,
-        db: Session = Depends(get_db),
+        db: Session,
     ):
         pass
 
-    def get_user_by_id(self, id: str, db: Session = Depends(get_db)) -> User:
+    def get_user_by_id(self, id: str, db: Session) -> User:
         pass
 
 
 class UserRepository(BaseUserRepository):
-    def get_user(self, email: str, db: Session = Depends(get_db)) -> User:
+    def get_user(self, email: str, db: Session) -> User:
         user_model = db.query(UserModel).filter(UserModel.email == email).first()
         return User(
             name=user_model.name,
@@ -54,7 +44,7 @@ class UserRepository(BaseUserRepository):
         hashed_password: str,
         name: str,
         nickname: str,
-        db: Session = Depends(get_db),
+        db: Session,
     ):
         user_model = UserModel(
             id=uuid.uuid4(),
@@ -65,16 +55,16 @@ class UserRepository(BaseUserRepository):
             created_at=datetime.datetime.now(),
             updated_at=datetime.datetime.now(),
         )
-        db.execute(
+        next(db).execute(
             f"""
-                INSERT INTO User (id, email, hashed_password, nickname, name, created_at, updated_at)
-                VALUES ({user_model.id}, {user_model.email}, {user_model.hashed_password}, {user_model.nickname}, {user_model.name}, {user_model.created_at}, {user_model.updated_at});
+                INSERT INTO "User" (id, email, hashed_password, nickname, name, created_at, updated_at)
+                VALUES ({user_model.id}, {user_model.email}, {"$anything$"+user_model.hashed_password+"$anything$"}, {user_model.nickname}, {user_model.name}, {user_model.created_at}, {user_model.updated_at});
                 COMMIT;                
             """
         )
 
-    def get_user_by_id(self, id: str, db: Session = Depends(get_db)) -> User:
-        user_model = db.execute(
+    def get_user_by_id(self, id: str, db) -> User:
+        user_model = next(db).execute(
             f"""
             SELECT id
             FROM User

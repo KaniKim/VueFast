@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     op.create_table(
         "User",
-        sa.Column("id", sa.String(length=64), nullable=False, index=True, unique=True),
+        sa.Column("id", sa.VARCHAR(length=64), nullable=False, index=True, unique=True),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("email", sa.String(length=255), nullable=False, unique=True),
         sa.Column("hashed_password", sa.String(length=255), nullable=False),
