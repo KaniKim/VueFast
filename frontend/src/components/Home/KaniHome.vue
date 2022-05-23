@@ -13,8 +13,8 @@
   </v-row>
   <br />
   <br />
-  <v-content>
+  <v-main>
     <h1 align="center">Kani's VuePage</h1>
-  </v-content>
+  </v-main>
     </div>
 </template>

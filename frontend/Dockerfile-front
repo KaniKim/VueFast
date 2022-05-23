@@ -1,5 +1,5 @@
 FROM node:lts-alpine
-WORKDIR /vue-project
+WORKDIR /frontend
 ADD ./package.json ./
 RUN npm install
 

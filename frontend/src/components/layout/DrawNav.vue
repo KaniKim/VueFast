@@ -22,9 +22,9 @@
           :key="key"
           :to="item.route"
         >
-          <v-list-item-content>
+          <v-list-item>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+          </v-list-item>
         </v-list-item>
       </div>
       <div v-else>
@@ -33,9 +33,9 @@
           :key="key"
           :to="item.route"
         >
-          <v-list-item-content>
+          <v-list-item>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+          </v-list-item>
         </v-list-item>
       </div>
     </v-list>

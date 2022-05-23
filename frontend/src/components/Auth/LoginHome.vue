@@ -1,10 +1,11 @@
 <template>
   <v-main>
-    <v-content>
+    <v-container>
       <h1 align="center">Login Page</h1>
-    </v-content>
+    </v-container>
     <br />
     <br />
+    <v-container>
     <v-row justify="center" align="center"
       ><v-col md="4" lg="4" cols="4">
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -22,13 +23,6 @@
             required
           ></v-text-field>
           <v-row justify="center">
-            <v-checkbox
-              v-model="checkbox"
-              :rules="[(v) => !!v || 'You must agree to continue!']"
-              label="Do you agree?"
-              required
-            ></v-checkbox>
-
             <v-btn
               :disabled="!valid"
               color="success"
@@ -41,7 +35,9 @@
         </v-form>
       </v-col>
     </v-row>
+    </v-container>
   </v-main>
+
 </template>
 
 <script>

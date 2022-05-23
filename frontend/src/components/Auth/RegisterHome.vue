@@ -1,8 +1,8 @@
 <template>
   <v-main>
-    <v-content>
+    <v-container>
       <h1 align="center">Register Page</h1>
-    </v-content>
+    </v-container>
     <br />
     <br />
     <v-row justify="center" align="center"
@@ -30,13 +30,6 @@
             required
           ></v-text-field>
           <v-row justify="center">
-            <v-checkbox
-              v-model="checkbox"
-              :rules="[(v) => !!v || 'You must agree to continue!']"
-              label="Do you agree?"
-              required
-            ></v-checkbox>
-
             <v-btn
               :disabled="!valid"
               color="success"

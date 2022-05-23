@@ -13,9 +13,9 @@
   </v-row>
   <br />
   <br />
-  <v-content>
+  <v-main>
     <h1 align="center">Hello From Kani</h1>
-  </v-content>
+  </v-main>
     </div>
 </template>
 <script></script>
