@@ -5,7 +5,6 @@ import datetime
 @dataclass()
 class User:
     name: str
-    nickname: str
     email: str
     hashed_password: str
     updated_at: datetime.datetime
