@@ -3,6 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     allowedHosts: "all",
+    webSocketServer: false,
     proxy: "http://localhost:8000",
   },
   pluginOptions: {

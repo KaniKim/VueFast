@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import axios from "axios";
-import qs from "qs";
 import Cookies from "js-cookie";
 
 export default createStore({
@@ -22,12 +21,17 @@ export default createStore({
     },
   },
   actions: {
+
     LOGIN({ commit }, userData) {
+      let formData = new FormData();
       const config = {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       };
+
+      formData.append("username", userData.username);
+      formData.append("password", userData.password);
       axios
-        .post("http://localhost:8000/auth", qs.stringify({ userData }), config)
+        .post("http://localhost:8000/auth",  formData , config)
         .then((res) => {
           commit("setUser", res.data.username);
           Cookies.set("access_token", res.data.access_token, "15m");
@@ -35,6 +39,8 @@ export default createStore({
           commit("setAccessToken", res.data.access_token);
           commit("setRefreshToken", res.data.refresh_token);
           return res;
+        }).catch((e) => {
+          console.log(e);
         });
     },
   },

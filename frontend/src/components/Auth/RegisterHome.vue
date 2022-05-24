@@ -72,12 +72,14 @@ export default {
         password: this.password,
       })
         .then((res) => {
-          if (res.status === 200) {
+          console.log(res);
+          if (res.status === 201) {
             this.$router.replace("/");
           }
         })
-        .catch(() => {
-          alert("Email is already existed");
+        .catch((e) => {
+          console.log(e);
+          alert(e);
         });
     },
   },

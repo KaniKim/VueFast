@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseSettings, BaseModel
 from passlib.context import CryptContext
 from jose import JWTError, jwt
+from sqlalchemy.orm import Session
 
 from repository.user import UserRepository
 
@@ -18,22 +19,12 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-SECRET_KEY = Settings().SECRET_KEY
-ALGORITHM = Settings().ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES = Settings().ACCESS_TOKEN_EXPIRE_MINUTES
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class TokenData(BaseModel):
     username: str | None = None
-
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class Password:
@@ -46,9 +37,8 @@ class Password:
     def get_password_hash(self, password):
         return pwd_context.hash(password)
 
-    def authenticate_user(self, email: str, password: str):
-        user = self.user_repo.get_user(email=email)
-
+    async def authenticate_user(self, email: str, password: str, db: Session):
+        user = await self.user_repo.get_user_by_email(email=email, db=db)
         if not user:
             return False
         if not self.verify_password(password, user.hashed_password):
@@ -59,6 +49,9 @@ class Password:
 
 class Auth:
     user_repo = UserRepository()
+    SECRET_KEY = Settings().SECRET_KEY
+    ALGORITHM = Settings().ALGORITHM
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(Settings().ACCESS_TOKEN_EXPIRE_MINUTES)
 
     def create_access_token(self, data: dict, expires_delta: datetime.timedelta | None = None):
         to_encode = data.copy()
@@ -68,7 +61,7 @@ class Auth:
             expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
 
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        encoded_jwt = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
         return encoded_jwt
 
     async def get_current_user(self, token: str = Depends(oauth2_scheme)):
@@ -79,7 +72,7 @@ class Auth:
         )
 
         try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
             username: str = payload.get("sub")
 
             if username is None:
