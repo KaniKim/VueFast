@@ -1,5 +1,5 @@
 {
-  "name": "vue-project",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,37 +9,24 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "axios": "^0.26.1",
+    "babel-eslint": "^10.1.0",
     "core-js": "^3.8.3",
-    "js-cookie": "^3.0.1",
-    "qs": "^6.10.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3",
-    "vuelidate": "^0.7.7",
-    "vuetify": "^3.0.0-beta.2",
-    "vuex": "^4.0.0",
-    "webfontloader": "^1.0.0",
-    "webpack-plugin-vuetify": "^2.0.0-alpha.10"
+    "vuetify": "^3.0.0-beta.0",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "eslint": "^8.14.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.7.1",
-    "prettier": "^2.4.1",
-    "sass": "^1.38.0",
-    "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "~2.4.8",
-    "vuetify-loader": "^2.0.0-alpha.0"
+    "eslint": "^7.32.0",
+    "eslint-plugin-html": "^6.2.0",
+    "eslint-plugin-vue": "^7.0.0-beta.4",
+    "vue-cli-plugin-vuetify": "~2.5.1",
+    "webpack-plugin-vuetify": "^2.0.0-alpha.0"
   },
   "eslintConfig": {
     "root": true,
@@ -48,8 +35,7 @@
     },
     "extends": [
       "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "plugin:prettier/recommended"
+      "eslint:recommended"
     ],
     "parserOptions": {
       "parser": "@babel/eslint-parser"

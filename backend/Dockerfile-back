@@ -5,4 +5,4 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /backend
 COPY ./ /backend/
-RUN pip install -r /backend/requirements.txt  && rm -rf /var/lib/apt/lists/* 
+RUN pip install -r /backend/requirements.txt 

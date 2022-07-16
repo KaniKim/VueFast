@@ -1,8 +1,8 @@
 FROM node:lts-alpine
 WORKDIR /frontend
-ADD ./package.json ./
+ADD ./package.json ./package.json
 RUN npm install
 
 COPY ./ /frontend/
-RUN npm run build && rm -rf /var/lib/apt/lists/*
+RUN npm run build
 CMD [ "npm", "run", "serve" ]
