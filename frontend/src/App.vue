@@ -1,26 +1,28 @@
 <template>
-  <v-app>
-    <LayoutFullVue></LayoutFullVue>
-    <v-main>
-      <MainFullVue></MainFullVue>
-    </v-main>
-  </v-app>
+  <NavBar></NavBar>
+  <SignIn></SignIn>
 </template>
 
 <script>
-import LayoutFullVue from "./components/LayoutFull.vue";
-import MainFullVue from "./components/MainFull.vue";
+import SignIn from "./components/SignComponent/SignIn.vue";
+import NavBar from "./components/LayoutComponent/NavBar"
 
 export default {
   name: "App",
-
   components: {
-    LayoutFullVue,
-    MainFullVue
+    SignIn,
+    NavBar
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>

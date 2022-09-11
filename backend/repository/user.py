@@ -4,6 +4,7 @@ from abc import ABC
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
+from sqlalchemy.future import select
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -34,18 +35,13 @@ class BaseUserRepository(ABC):
 class UserRepository(BaseUserRepository):
     async def get_user_all(self, db: Session) -> List[User]:
 
-        result = await db.execute(
-            text(
-                """
-            SELECT id, email, hashed_password, name, created_at, updated_at
-            FROM "users";
-            """
-            )
-        )
+        query = await db.execute(select(UserModel))
+        result = query.scalars().all()
 
         if result:
-            return [res for res in result.fetchall()]
+            return [res for res in result]
 
+        return None
     async def get_user(self, email: str, db: Session) -> User:
         user_model = await db.query(UserModel).filter(UserModel.email == email).first()
         return User(
@@ -73,15 +69,8 @@ class UserRepository(BaseUserRepository):
         )
 
         try:
-            await db.execute(
-                text(
-                    f"""
-                    INSERT INTO users (id, email, hashed_password, name, created_at, updated_at)
-                    VALUES ('{user_model.id}', '{user_model.email}', '{user_model.hashed_password}', '{user_model.name}', '{user_model.created_at}', '{user_model.updated_at}');
-                """
-                )
-            )
-            await db.commit()
+            db.add(user_model)
+            await db.flush()
         except SQLAlchemyError as e:
             return e
 

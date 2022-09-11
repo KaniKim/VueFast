@@ -1,4 +1,4 @@
-# frontend
+# vue-practice
 
 ## Project setup
 ```

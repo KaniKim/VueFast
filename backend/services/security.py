@@ -24,7 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    username: str = None
 
 
 class Password:
@@ -53,7 +53,7 @@ class Auth:
     ALGORITHM = Settings().ALGORITHM
     ACCESS_TOKEN_EXPIRE_MINUTES = int(Settings().ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    def create_access_token(self, data: dict, expires_delta: datetime.timedelta | None = None):
+    def create_access_token(self, data: dict, expires_delta: datetime.timedelta = None):
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.datetime.utcnow() + expires_delta
