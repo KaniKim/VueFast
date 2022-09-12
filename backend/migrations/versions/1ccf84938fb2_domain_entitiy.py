@@ -7,7 +7,7 @@ Create Date: 2022-04-30 19:20:23.224927
 """
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = "1ccf84938fb2"
@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     op.create_table(
         "users",
-        sa.Column("id", sa.VARCHAR(length=64), nullable=False, index=True, unique=True),
+        sa.Column("id", UUID(as_uuid=True), nullable=False, primary_key=True),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("email", sa.String(length=255), nullable=False, unique=True),
         sa.Column("hashed_password", sa.String(length=255), nullable=False),

@@ -39,8 +39,9 @@ class UserRepository(BaseUserRepository):
         result = query.scalars().all()
 
         if result:
+            db.close()
             return [res for res in result]
-
+        db.close()
         return None
     async def get_user(self, email: str, db: Session) -> User:
         user_model = await db.query(UserModel).filter(UserModel.email == email).first()
@@ -51,6 +52,7 @@ class UserRepository(BaseUserRepository):
             created_at=user_model.created_at,
             updated_at=user_model.update_at,
         )
+        db.close()
 
     async def create_user(
         self,
@@ -67,31 +69,20 @@ class UserRepository(BaseUserRepository):
             created_at=datetime.datetime.utcnow(),
             updated_at=datetime.datetime.utcnow(),
         )
-
+        db.add(user_model)
         try:
-            db.add(user_model)
-            await db.flush()
+            await db.commit()
+            db.close()
         except SQLAlchemyError as e:
-            return e
+            await  db.rollback()
+            raise e
+        return user_model
+
 
     async def get_user_by_email(self, email: str, db: Session) -> Optional[User]:
-        user_model = await db.execute(
-            text(
-                f"""
-            SELECT email, name, created_at, updated_at, hashed_password
-            FROM "users"
-            WHERE email='{email}'; 
-            """
-            )
-        )
-
+        user_model = select(UserModel).where(email == email)
+        user_model = await db.execute(user_model)
         if user_model:
-            user = user_model.first()
-            return User(
-                name=user[1],
-                email=user[0],
-                hashed_password=user[4],
-                created_at=user[2],
-                updated_at=user[3],
-            )
+            user = user_model.first()["UserModel"]
+            return user
         return None

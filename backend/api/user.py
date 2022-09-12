@@ -31,10 +31,10 @@ async def get_all_user(db: Session = Depends(get_db)):
     return user
 
 
-@router.get("/{user_id}")
-async def get_user(user_id: str, db: Session = Depends(get_db)):
+@router.get("/{user_email}")
+async def get_user(user_email: str, db: Session = Depends(get_db)):
 
-    user = await user_repo.get_user_by_email(user_id, db=db)
+    user = await user_repo.get_user_by_email(user_email, db=db)
 
     if not user:
         return None
