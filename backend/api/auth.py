@@ -41,7 +41,6 @@ class UserRequest(BaseModel):
 
 @router.post("/", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    print(form_data)
     user_auth_class = Auth()
     user_pwd_class = Password()
     user = await user_pwd_class.authenticate_user(email=form_data.username, password=form_data.password, db=db)

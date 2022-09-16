@@ -1,17 +1,14 @@
 <template>
   <NavBar></NavBar>
-  <SignIn></SignIn>
 </template>
 
 <script>
-import SignIn from "./components/SignComponent/SignIn.vue";
-import NavBar from "./components/LayoutComponent/NavBar"
+import NavBar from "@/components/LayoutComponent/NavBar";
 
 export default {
   name: "App",
   components: {
-    SignIn,
-    NavBar
+    NavBar,
   },
 };
 </script>
@@ -23,6 +20,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
