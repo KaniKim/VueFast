@@ -15,7 +15,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span style="padding-left: 30px" class="text-2xl font-extrabold text-blue-800">일취월장 음식 메뉴 정해주는 사이트</span>
+        <span style="padding-left: 30px" class="text-2xl font-extrabold text-blue-800">BackDoor 음식 메뉴 정해주는 사이트</span>
       </div>
     </div>
   </div>

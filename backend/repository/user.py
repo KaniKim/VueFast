@@ -3,13 +3,12 @@ import uuid
 from abc import ABC
 from typing import List, Optional
 
-from sqlalchemy.orm import Session
-from sqlalchemy.future import select
-from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.future import select
+from sqlalchemy.orm import Session
 
-from models.user import UserModel
 from domain.user import User
+from models.user import UserModel
 
 
 class BaseUserRepository(ABC):
@@ -33,7 +32,7 @@ class BaseUserRepository(ABC):
 
 
 class UserRepository(BaseUserRepository):
-    async def get_user_all(self, db: Session) -> List[User]:
+    async def get_user_all(self, db: Session) -> Optional[List[User]]:
 
         query = await db.execute(select(UserModel))
         result = query.scalars().all()
@@ -45,6 +44,7 @@ class UserRepository(BaseUserRepository):
         return None
     async def get_user(self, email: str, db: Session) -> User:
         user_model = await db.query(UserModel).filter(UserModel.email == email).first()
+        db.close()
         return User(
             name=user_model.name,
             email=user_model.email,
@@ -52,7 +52,7 @@ class UserRepository(BaseUserRepository):
             created_at=user_model.created_at,
             updated_at=user_model.update_at,
         )
-        db.close()
+
 
     async def create_user(
         self,
