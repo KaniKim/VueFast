@@ -7,7 +7,6 @@
     <BarDrawer class="absolute" v-if="showSidebar"></BarDrawer>
   </transition>
   <div class="relative flex min-h-screen">
-
     <div class="flex-1">
       <div class="flex bg-white shadow px-2 py-4">
         <button @click="showSidebar = !showSidebar" class="text-cyan-600 font-extrabold">
@@ -17,15 +16,18 @@
         </button>
         <span style="padding-left: 30px" class="text-2xl font-extrabold text-blue-800">BackDoor 음식 메뉴 정해주는 사이트</span>
       </div>
+      <HomeNav></HomeNav>
     </div>
+
   </div>
 </template>
 <script>
 import {ref} from "vue";
 import BarDrawer from "@/components/LayoutComponent/BarDrawer";
+import HomeNav from "@/components/LayoutComponent/HomeNav";
 
 export default {
-  components: {BarDrawer},
+  components: {HomeNav, BarDrawer},
   setup() {
     const showSidebar = ref(false)
     return {
