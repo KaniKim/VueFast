@@ -47,4 +47,9 @@ async def create_user(user_info: UserRequest, db: Session = Depends(get_db)):
     plain_password = user_info.password
     hashed_password = Password().get_password_hash(password=plain_password)
 
-    return await user_repo.create_user(email=user_info.email, hashed_password=hashed_password, name=user_info.name, db=db)
+    return await user_repo.create_user(
+        email=user_info.email,
+        hashed_password=hashed_password,
+        name=user_info.name,
+        db=db,
+    )

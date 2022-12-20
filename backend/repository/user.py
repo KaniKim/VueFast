@@ -25,7 +25,15 @@ class BaseUserRepository(ABC):
         name: str,
         db: Session,
     ):
-        pass
+        new_user = UserModel(
+            email=email,
+            name=name,
+            hashed_password=hashed_password,
+            created_at=datetime.datetime.now(),
+            updated_at=datetime.datetime.now(),
+        )
+        db.add(new_user)
+        return new_user
 
     def get_user_by_email(self, email: str, db: Session) -> User:
         pass
@@ -42,6 +50,7 @@ class UserRepository(BaseUserRepository):
             return [res for res in result]
         db.close()
         return None
+
     async def get_user(self, email: str, db: Session) -> User:
         user_model = await db.query(UserModel).filter(UserModel.email == email).first()
         db.close()
@@ -52,7 +61,6 @@ class UserRepository(BaseUserRepository):
             created_at=user_model.created_at,
             updated_at=user_model.update_at,
         )
-
 
     async def create_user(
         self,
@@ -74,10 +82,9 @@ class UserRepository(BaseUserRepository):
             await db.commit()
             db.close()
         except SQLAlchemyError as e:
-            await  db.rollback()
+            await db.rollback()
             raise e
         return user_model
-
 
     async def get_user_by_email(self, email: str, db: Session) -> Optional[User]:
         user_model = select(UserModel).where(email == email)

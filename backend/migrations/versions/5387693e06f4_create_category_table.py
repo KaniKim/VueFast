@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
-revision = '5387693e06f4'
-down_revision = '1b687b55f183'
+revision = "5387693e06f4"
+down_revision = "1b687b55f183"
 branch_labels = None
 depends_on = None
 

@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 
 from models import Base
 
+
 class PostModel(Base):
     __tablename__ = "posts"
 
@@ -16,4 +17,3 @@ class PostModel(Base):
     comments = ARRAY(UUID(as_uuid=True))
     tags = ARRAY(UUID(as_uuid=True))
     like = Column(Integer())
-

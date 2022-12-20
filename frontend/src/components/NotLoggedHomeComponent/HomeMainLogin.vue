@@ -1,16 +1,64 @@
 <template>
-  <v-row>
-    <v-col align-self="center">
-      <v-card class="overflow-hidden" color="primary">
-        <v-toolbar flat>
-          <v-toolbar-title>Login</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-text-field label="Email"></v-text-field>
-          <v-text-field clearable label="Password"></v-text-field>
-          <br>
-          <v-btn type="submit" variant="elevated">LogIn</v-btn>
+  <v-container fluid style="max-width: 60%;">
+    <v-flex md8 sm8>
+      <v-card class="elevation-6">
+        <v-toolbar color="primary" dark fluid>
+          <v-toolbar-title>Login form</v-toolbar-title>
         </v-toolbar>
+        <v-form id="check-login-form" @submit.prevent="onSubmit">
+          <v-card-text>
+            <v-col align="center">
+              <v-text-field
+                v-model="email"
+                :rules="[required(email)]"
+                label="Login"
+                name="login"
+                style="max-width: 80%;"
+                type="text"
+              ></v-text-field>
+              <v-text-field
+                v-model="password"
+                :rules="[required(password)]"
+                label="Password"
+                name="password"
+                style="max-width: 80%;"
+                type="password"
+              ></v-text-field>
+            </v-col>
+          </v-card-text>
+        </v-form>
+        <v-card-actions>
+          <v-btn
+            :loading="loading"
+            block
+            color="primary"
+            form="check-login-form"
+            size="large"
+            type="submit"
+            variant="elevated"
+          >
+            Sign In
+          </v-btn>
+        </v-card-actions>
+        <br>
       </v-card>
-    </v-col>
-  </v-row>
+    </v-flex>
+  </v-container>
 </template>
+<script>
+export default {
+  data: () => ({
+    email: null,
+    password: null,
+  }),
+
+  methods: {
+    onSubmit() {
+      return 1;
+    },
+    required(v) {
+      return !!v || "Field is Required";
+    }
+  }
+};
+</script>

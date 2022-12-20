@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
-revision = 'b5fab611b16c'
-down_revision = '5387693e06f4'
+revision = "b5fab611b16c"
+down_revision = "5387693e06f4"
 branch_labels = None
 depends_on = None
 
@@ -22,7 +22,7 @@ def upgrade():
         sa.Column("id", UUID(as_uuid=True), nullable=False, primary_key=True),
         sa.Column("contents", sa.String(length=255), nullable=False),
         sa.Column("users_id", UUID(as_uuid=True), sa.ForeignKey("users.id")),
-        sa.Column("like", sa.Integer())
+        sa.Column("like", sa.Integer()),
     )
 
 

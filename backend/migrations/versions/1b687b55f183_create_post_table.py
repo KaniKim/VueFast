@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
-revision = '1b687b55f183'
-down_revision = '1ccf84938fb2'
+revision = "1b687b55f183"
+down_revision = "1ccf84938fb2"
 branch_labels = None
 depends_on = None
 
@@ -25,8 +25,9 @@ def upgrade():
         sa.ARRAY("comments", UUID(as_uuid=True)),
         sa.ARRAY("tags", UUID(as_uuid=True)),
         sa.Column("users_id", UUID(as_uuid=True), sa.ForeignKey("users.id")),
-        sa.Column("like", sa.Integer())
+        sa.Column("like", sa.Integer()),
     )
+
 
 def downgrade():
     op.drop_constraint("users_id", "users")
