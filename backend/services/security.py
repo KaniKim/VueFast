@@ -7,8 +7,6 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
-from repository.user import UserRepository
-
 
 class Settings(BaseSettings):
     SECRET_KEY: str = "SECRET_KEY"
@@ -28,27 +26,14 @@ class TokenData(BaseModel):
 
 
 class Password:
-
-    user_repo = UserRepository()
-
-    def verify_password(self, plain_password, hashed_password):
+    def verify_password(self, plain_password: str, hashed_password: str):
         return pwd_context.verify(plain_password, hashed_password)
 
-    def get_password_hash(self, password):
+    def get_password_hash(self, password: str):
         return pwd_context.hash(password)
-
-    async def authenticate_user(self, email: str, password: str, db: Session):
-        user = await self.user_repo.get_user_by_email(email=email, db=db)
-        if not user:
-            return False
-        if not self.verify_password(password, user.hashed_password):
-            return False
-
-        return user
 
 
 class Auth:
-    user_repo = UserRepository()
     SECRET_KEY = Settings().SECRET_KEY
     ALGORITHM = Settings().ALGORITHM
     ACCESS_TOKEN_EXPIRE_MINUTES = int(Settings().ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -82,9 +67,4 @@ class Auth:
         except JWTError:
             raise credentials_exception
 
-        user = self.user_repo.get_user(email=token_data.username)
-
-        if user is None:
-            raise credentials_exception
-
-        return user
+        return None

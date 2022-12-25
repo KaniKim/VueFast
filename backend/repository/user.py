@@ -68,14 +68,11 @@ class UserRepository(BaseUserRepository):
         result = query.scalars().all()
 
         if result:
-            db.close()
-            return [res for res in result]
-        db.close()
+            return [self.ConvertToDTO(res) for res in result]
         return None
 
     async def get_user(self, email: str, db: Session) -> User:
         user_model = await db.query(UserModel).filter(email=email).first()
-        db.close()
         return UserModel(
             name=user_model.name,
             email=user_model.email,
@@ -106,14 +103,12 @@ class UserRepository(BaseUserRepository):
         except SQLAlchemyError as error:
             db.rollback()
             raise error
-        db.close()
 
         return self.ConvertToDTO(user_model)
 
     async def get_user_by_email(self, email: str, db: Session) -> Optional[User]:
-        user_model = select(UserModel).where(email=email)
-        user_model = await db.execute(user_model)
-        if user_model:
-            user = user_model.first()["UserModel"]
-            return user
+        query = await db.execute(select(UserModel).where(UserModel.email == email))
+        user = query.scalars().first()
+        if user:
+            return self.ConvertToDTO(user)
         return None

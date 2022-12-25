@@ -10,6 +10,11 @@ class User(BaseModel):
     updated_at: datetime.datetime
 
 
+class UserAuth(BaseModel):
+    email: str
+    password: str
+
+
 class UserRequest(BaseModel):
     name: str
     email: str
