@@ -3,6 +3,7 @@ import uuid
 from abc import ABC
 from typing import List, Optional
 
+from sqlalchemy import update
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
@@ -71,15 +72,15 @@ class UserRepository(BaseUserRepository):
             return [self.ConvertToDTO(res) for res in result]
         return None
 
-    async def get_user(self, email: str, db: Session) -> User:
-        user_model = await db.query(UserModel).filter(email=email).first()
-        return UserModel(
-            name=user_model.name,
-            email=user_model.email,
-            hashed_password=user_model.hashed_password,
-            created_at=user_model.created_at,
-            updated_at=user_model.update_at,
+    async def get_user(self, email: str, db: Session) -> Optional[User]:
+        user_model = (
+            (await db.execute(select(UserModel).where(UserModel.email == email)))
+            .scalars()
+            .first()
         )
+        if user_model:
+            return self.ConvertToDTO(user=user_model)
+        return None
 
     async def create_user(
         self,
@@ -100,6 +101,7 @@ class UserRepository(BaseUserRepository):
         db.add(user_model)
         try:
             await db.commit()
+            await db.refresh(user_model)
         except SQLAlchemyError as error:
             db.rollback()
             raise error
@@ -112,3 +114,14 @@ class UserRepository(BaseUserRepository):
         if user:
             return self.ConvertToDTO(user)
         return None
+
+    async def save_refresh_token(self, email: str, token: str, db: Session) -> bool:
+        if await self.get_user_by_email(email=email, db=db):
+            query = update(UserModel).where(UserModel.email == email)
+            query = query.values(refresh_token=token).execution_options(
+                synchronize_session="fetch"
+            )
+            await db.execute(query)
+            await db.commit()
+            return True
+        return False

@@ -12,5 +12,6 @@ class UserModel(Base):
     name: str = Column(String(255), unique=True)
     email: str = Column(String(255), unique=True, index=True)
     hashed_password: str = Column(String)
+    refresh_token: str = Column(String(255))
     created_at = Column(DateTime)
     updated_at = Column(DateTime)

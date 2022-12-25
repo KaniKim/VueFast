@@ -18,8 +18,8 @@ auth_service = Auth()
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/", response_model=Token)
-async def get_access_token(user: UserAuth, db: Session = Depends(get_db)):
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Token)
+async def get_token(user: UserAuth, db: Session = Depends(get_db)):
     check_user = await user_service.get_user_existed_or_not(email=user.email, db=db)
 
     if not check_user:
@@ -28,11 +28,16 @@ async def get_access_token(user: UserAuth, db: Session = Depends(get_db)):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = datetime.timedelta(
-        minutes=auth_service.ACCESS_TOKEN_EXPIRE_MINUTES
+
+    access_token = await auth_service.create_token(
+        data={"email": user.email}, token_value="access", db=db
     )
-    access_token = auth_service.create_access_token(
-        data={"email": user.email}, expires_delta=access_token_expires
+    refresh_token = await auth_service.create_token(
+        data={"email": user.email}, token_value="refresh", db=db
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+    }

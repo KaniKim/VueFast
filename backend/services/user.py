@@ -14,7 +14,7 @@ class UserService:
         if query_result:
             return None
         hashed_password = self.password_service.get_password_hash(password=password)
-        result = self.user_repo.create_user(
+        result = await self.user_repo.create_user(
             email=email,
             hashed_password=hashed_password,
             name=name,

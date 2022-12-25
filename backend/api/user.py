@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException, Query, Response
 
-from api import SessionLocal, get_db
+from api import get_db
 from dto.user import UserRequest, UserResponse
 from services.user import UserService
 from services.security import Password, Auth
