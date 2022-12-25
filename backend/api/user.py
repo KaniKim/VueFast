@@ -53,8 +53,4 @@ async def create_user(user_info: UserRequest, db: Session = Depends(get_db)):
         db=db,
     )
 
-    import ipdb
-
-    ipdb.set_trace()
-
     return result

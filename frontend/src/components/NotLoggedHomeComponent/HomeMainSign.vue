@@ -3,7 +3,7 @@
     <v-flex md8 sm8>
       <v-card class="elevation-6">
         <v-toolbar color="primary" dark fluid>
-          <v-toolbar-title>Login form</v-toolbar-title>
+          <v-toolbar-title>Signup form</v-toolbar-title>
         </v-toolbar>
         <v-form id="check-login-form" @submit.prevent="onSubmit">
           <v-card-text>
