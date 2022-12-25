@@ -82,7 +82,8 @@ class Auth:
         except JWTError:
             raise credentials_exception
 
-        user = self.user_repo.get_user(email=token_data.usernmae)
+        user = self.user_repo.get_user(email=token_data.username)
+
         if user is None:
             raise credentials_exception
 

@@ -7,7 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
 
-from domain.user import User
+from dto.user import User
 from models.user import UserModel
 
 
@@ -40,6 +40,28 @@ class BaseUserRepository(ABC):
 
 
 class UserRepository(BaseUserRepository):
+    @classmethod
+    def ConvertToModel(cls, user: User):
+        return UserModel(
+            id=user.id,
+            name=user.name,
+            hashed_password=user.hashed_password,
+            email=user.email,
+            created_at=user.created_at,
+            updated_at=user.updated_at,
+        )
+
+    @classmethod
+    def ConvertToDTO(cls, user: UserModel):
+        return User(
+            id=user.id,
+            name=user.name,
+            password=user.hashed_password,
+            email=user.email,
+            created_at=user.created_at,
+            updated_at=user.updated_at,
+        )
+
     async def get_user_all(self, db: Session) -> Optional[List[User]]:
 
         query = await db.execute(select(UserModel))
@@ -52,9 +74,9 @@ class UserRepository(BaseUserRepository):
         return None
 
     async def get_user(self, email: str, db: Session) -> User:
-        user_model = await db.query(UserModel).filter(UserModel.email == email).first()
+        user_model = await db.query(UserModel).filter(email=email).first()
         db.close()
-        return User(
+        return UserModel(
             name=user_model.name,
             email=user_model.email,
             hashed_password=user_model.hashed_password,
@@ -68,7 +90,8 @@ class UserRepository(BaseUserRepository):
         hashed_password: str,
         name: str,
         db: Session,
-    ):
+    ) -> User:
+
         user_model = UserModel(
             id=uuid.uuid4(),
             email=email,
@@ -80,14 +103,15 @@ class UserRepository(BaseUserRepository):
         db.add(user_model)
         try:
             await db.commit()
-            db.close()
-        except SQLAlchemyError as e:
-            await db.rollback()
-            raise e
-        return user_model
+        except SQLAlchemyError as error:
+            db.rollback()
+            raise error
+        db.close()
+
+        return self.ConvertToDTO(user_model)
 
     async def get_user_by_email(self, email: str, db: Session) -> Optional[User]:
-        user_model = select(UserModel).where(email == email)
+        user_model = select(UserModel).where(email=email)
         user_model = await db.execute(user_model)
         if user_model:
             user = user_model.first()["UserModel"]

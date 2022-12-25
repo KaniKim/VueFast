@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "types": [
+      "node"
+    ],
     "module": "esnext",
     "baseUrl": "./",
     "moduleResolution": "node",
