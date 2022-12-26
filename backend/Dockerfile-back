@@ -1,8 +1,9 @@
-FROM python:3.10.1
+FROM python:3.11.1
 
 ENV PYTHONDONTWRITEVYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /backend
 COPY ./ /backend/
+COPY .env /backend/.env
 RUN pip install -r /backend/requirements.txt 
