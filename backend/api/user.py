@@ -7,7 +7,7 @@ from services.user import UserService
 from services.security import Password, Auth
 
 
-router = APIRouter(prefix="/user", tags=["users"])
+router = APIRouter(prefix="/api/user", tags=["users"])
 user_service = UserService()
 
 

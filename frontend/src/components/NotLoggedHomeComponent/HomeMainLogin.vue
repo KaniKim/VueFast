@@ -46,6 +46,8 @@
   </v-container>
 </template>
 <script>
+import Axios from "@/api/default";
+
 export default {
   data: () => ({
     email: null,
@@ -54,7 +56,16 @@ export default {
 
   methods: {
     onSubmit() {
-      return 1;
+      Axios.post("/auth/", {
+        email: this.email,
+        password: this.password,
+      })
+        .then(res => {
+          this.$store.commit("setUserEmail", this.email);
+          console.log(res);
+        }, err => {
+          console.log(err);
+        });
     },
     required(v) {
       return !!v || "Field is Required";

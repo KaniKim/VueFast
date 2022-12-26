@@ -5,7 +5,7 @@
         <v-toolbar color="primary" dark fluid>
           <v-toolbar-title>Signup form</v-toolbar-title>
         </v-toolbar>
-        <v-form id="check-login-form" @submit.prevent="onSubmit">
+        <v-form id="check-login-form">
           <v-card-text>
             <v-col align="center">
               <v-text-field
@@ -37,13 +37,13 @@
         </v-form>
         <v-card-actions>
           <v-btn
-            :loading="loading"
             block
             color="primary"
             form="check-login-form"
             size="large"
             type="submit"
             variant="elevated"
+            @click.prevent="onSubmit"
           >
             Sign In
           </v-btn>
@@ -54,16 +54,37 @@
   </v-container>
 </template>
 <script>
+import Axios from "@/api/default";
+import router from "@/routes";
+
 export default {
   data: () => ({
     email: null,
     password: null,
     nickname: null,
+    isError: false,
+    errMsg: "",
   }),
 
   methods: {
     onSubmit() {
-      return 1;
+      if (!this.email || !this.nickname || !this.password) {
+        this.isError = true;
+        this.errMsg = "Please input all form";
+        return;
+      }
+      Axios.post("/user/", {
+        email: this.email,
+        password: this.password,
+        name: this.nickname,
+      })
+        .then(res => {
+          console.log(res);
+          router.push("/login");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     required(v) {
       return !!v || "Field is Required";

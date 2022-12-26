@@ -15,7 +15,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 user_service = UserService()
 auth_service = Auth()
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Token)
