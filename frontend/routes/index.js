@@ -1,10 +1,10 @@
 import * as VueRouter from "vue-router";
-import {store} from "@/store";
+import {store} from "../store";
 
 const routes = [
-  {path: "/", component: () => import("@/components/LoggedHomeComponent/HomeMain")},
-  {path: "/login", component: () => import("@/components/NotLoggedHomeComponent/HomeMainLogin")},
-  {path: "/sign", component: () => import("@/components/NotLoggedHomeComponent/HomeMainSign")},
+  {path: "/", component: () => import("../pages/home/HomeMain")},
+  {path: "/login", component: () => import("../pages/home/HomeMainLogin")},
+  {path: "/sign", component: () => import("../pages/home/HomeMainSign")},
 ];
 
 const router = VueRouter.createRouter({
