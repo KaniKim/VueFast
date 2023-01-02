@@ -1,7 +1,11 @@
+import os
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config
+
+from pydantic import BaseSettings
+from sqlalchemy import engine_from_config, create_engine
 from sqlalchemy import pool
 from alembic import context
+from sqlalchemy.exc import DatabaseError
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -23,6 +27,14 @@ target_metadata = None
 # ... etc.
 
 
+class Settings(BaseSettings):
+    SQLALCHEMY_TEST_DATABASE_URL: str = "SQLALCHEMY_TEST_DATABASE_URL"
+    SQLALCHEMY_DATABASE_URL: str = "SQLALCHEMY_DATABASE_URL"
+
+    class Config:
+        env_file = ".env"
+
+
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -35,6 +47,12 @@ def run_migrations_offline():
     script output.
 
     """
+
+    if os.environ.get("TESTING"):
+        raise DatabaseError(
+            "Running testing migrations offline currently not permitted."
+        )
+
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -54,6 +72,20 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+
+    db_url = (
+        Settings.SQLALCHEMY_TEST_DATABASE_URL
+        if os.environ.get("TESTING")
+        else Settings.SQLALCHEMY_DATABASE_URL
+    )
+
+    if os.environ.get("TESTING"):
+        default_engine = create_engine(db_url, isolation_level="AUTOCOMMIT")
+
+        with default_engine.connect() as default_conn:
+            default_conn.execute("DROP DATABASE IF EXISTS fast-test")
+            default_conn.execute("CREATE DATABASE fast-test")
+
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
