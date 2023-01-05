@@ -2,9 +2,9 @@ import * as VueRouter from "vue-router";
 import {store} from "../store";
 
 const routes = [
-  {path: "/", component: () => import("../pages/home/HomeMain")},
-  {path: "/login", component: () => import("../pages/home/HomeMainLogin")},
-  {path: "/sign", component: () => import("../pages/home/HomeMainSign")},
+  {path: "/", name: "home", component: "pages/index"},
+  {path: "/home/login", name: "login", component: "pages/home/login"},
+  {path: "/home/sign", name: "sign", component: "pages/home/sign"},
 ];
 
 const router = VueRouter.createRouter({

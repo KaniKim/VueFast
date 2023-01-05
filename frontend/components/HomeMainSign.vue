@@ -57,7 +57,7 @@
 </template>
 <script>
 import Axios from "../api/default";
-import router from "../routes/index";
+import router from "../router/index";
 
 export default {
   name: "HomeSign",

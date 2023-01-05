@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <v-navigation-drawer>
-      <v-list v-for="item in items" v-if="loggedIn">
-        <v-list-item>
-          <router-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
-          </router-link>
-        </v-list-item>
-      </v-list>
-      <v-list v-for="item in items_not_login" v-if="!loggedIn">
-        <v-list-item>
-          <router-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
-          </router-link>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </div>
+  <v-navigation-drawer v-model="drawerOpen">
+    <v-list v-for="item in items" v-show="loggedIn" v-bind:key="item">
+      <v-list-item>
+        <nuxt-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
+        </nuxt-link>
+      </v-list-item>
+    </v-list>
+    <v-list v-for="item in items_not_login" v-show="!loggedIn" v-bind:key="item">
+      <v-list-item>
+        <router-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
+        </router-link>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 <script>
 export default {
+  props: ["drawer"],
   name: "BarDrawer",
   data: () => ({
     loggedIn: false,
@@ -43,13 +42,18 @@ export default {
     items_not_login: [
       {
         title: "login",
-        value: "/login",
+        value: "/home/login",
       },
       {
         title: "sing up",
-        value: "/sign",
+        value: "/home/sign",
       },
     ]
   }),
+  computed: {
+    drawerOpen() {
+      return this.drawer;
+    }
+  }
 };
 </script>

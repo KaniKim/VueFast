@@ -1,9 +1,8 @@
 <template>
   <div>
-    <v-app-bar color="primary">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer">
-      </v-app-bar-nav-icon>
-      <v-app-bar-title>Back Door Welcome</v-app-bar-title>
+    <v-app-bar :drawer="drawer" color="primary">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-title>Back Door JJal Bang</v-app-bar-title>
     </v-app-bar>
     <BarDrawer v-model="drawer"></BarDrawer>
     <v-footer app bottom fixed padless width="100%">
@@ -23,11 +22,6 @@ export default {
     return {
       drawer: false
     };
-  },
-  watch: {
-    group() {
-      this.drawer = true;
-    },
   },
 };
 

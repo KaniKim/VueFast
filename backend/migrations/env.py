@@ -6,14 +6,18 @@ from sqlalchemy import engine_from_config, create_engine
 from sqlalchemy import pool
 from alembic import context
 from sqlalchemy.exc import DatabaseError
+from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import create_async_engine
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-fileConfig(config.config_file_name)
+load_dotenv()
+
+section = config.config_ini_section
+config.set_section_option(section, "DB_USER", os.environ.get("DB_USER"))
+config.set_section_option(section, "DB_PASSWORD", os.environ.get("DB_PASSWORD"))
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -65,7 +69,7 @@ def run_migrations_offline():
         context.run_migrations()
 
 
-def run_migrations_online():
+async def run_migrations_online():
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
@@ -74,24 +78,24 @@ def run_migrations_online():
     """
 
     db_url = (
-        Settings.SQLALCHEMY_TEST_DATABASE_URL
+        Settings().SQLALCHEMY_TEST_DATABASE_URL
         if os.environ.get("TESTING")
-        else Settings.SQLALCHEMY_DATABASE_URL
+        else Settings().SQLALCHEMY_DATABASE_URL
     )
 
     if os.environ.get("TESTING"):
-        default_engine = create_engine(db_url, isolation_level="AUTOCOMMIT")
+        default_engine = create_async_engine(db_url, isolation_level="AUTOCOMMIT")
 
-        with default_engine.connect() as default_conn:
-            default_conn.execute("DROP DATABASE IF EXISTS fast-test")
-            default_conn.execute("CREATE DATABASE fast-test")
+        async with default_engine.connect() as default_conn:
+            await default_conn.execute("DROP DATABASE IF EXISTS fast-test")
+            await default_conn.execute("CREATE DATABASE fast-test")
 
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-
+    config.set_main_option("sqlalchemy.url", db_url)
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
 

@@ -1,15 +1,16 @@
 <template>
   <v-app>
-    <main>
+    <v-main>
       <NavBar/>
-      <router-view></router-view>
-    </main>
+      <nuxt></nuxt>
+    </v-main>
   </v-app>
 </template>
 <script>
 import NavBar from "../layout/NavBar";
 
 export default {
+  name: "home",
   components: {
     NavBar,
   }

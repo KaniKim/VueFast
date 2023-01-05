@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const Axios = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API
+  baseURL: import.meta.env.VITE_APP_BASE_API,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 Axios.defaults.timeout = 2500;

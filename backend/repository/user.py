@@ -74,10 +74,8 @@ class UserRepository(BaseUserRepository):
 
     async def get_user(self, email: str, db: Session) -> Optional[User]:
         user_model = (
-            (await db.execute(select(UserModel).where(UserModel.email == email)))
-            .scalars()
-            .first()
-        )
+            await db.execute(select(UserModel).where(UserModel.email == email))
+        ).scalar()
         if user_model:
             return self.ConvertToDTO(user=user_model)
         return None

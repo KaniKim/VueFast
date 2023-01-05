@@ -1,21 +1,15 @@
-import datetime
-from typing import Union
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from services.user import UserService
-from services.security import Password, Auth
-from dto.user import UserAuth
-from dto.auth import Token
 from api import get_db
-
-from pydantic import BaseModel
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-
+from dto.auth import Token
+from dto.user import UserAuth
+from services.security import Auth
+from services.user import UserService
 
 user_service = UserService()
 auth_service = Auth()
-router = APIRouter(prefix="/api/auth", tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Token)
