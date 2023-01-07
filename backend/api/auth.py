@@ -12,7 +12,7 @@ auth_service = Auth()
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Token)
+@router.post("/login", status_code=status.HTTP_201_CREATED, response_model=Token)
 async def get_token(user: UserAuth, db: Session = Depends(get_db)):
     check_user = await user_service.get_user_existed_or_not(email=user.email, db=db)
 

@@ -1,16 +1,13 @@
 <template>
-  <v-app>
-    <v-main>
-      <NavBar></NavBar>
-      <HomeMainLogin></HomeMainLogin>
-    </v-main>
-  </v-app>
+  <v-main>
+    <HomeMainLogin></HomeMainLogin>
+  </v-main>
 </template>
 <script>
-import NavBar from "../../layout/NavBar";
+import HomeMainLogin from "../../components/HomeMainLogin";
 
 export default {
   name: "login",
-  components: {NavBar}
+  components: {HomeMainLogin}
 };
 </script>

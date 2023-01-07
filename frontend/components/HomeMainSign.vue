@@ -57,7 +57,6 @@
 </template>
 <script>
 import Axios from "../api/default";
-import router from "../router/index";
 
 export default {
   name: "HomeSign",
@@ -83,7 +82,7 @@ export default {
       })
         .then(res => {
           console.log(res);
-          router.push("/login");
+          this.$router.push("/login");
         })
         .catch(err => {
           console.log(err);

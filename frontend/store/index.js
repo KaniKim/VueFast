@@ -1,38 +1,24 @@
-import {createStore} from "vuex";
-import Axios from "../api/default";
+import Vuex from "vuex";
+import axios from "axios";
 
-export const store = createStore({
+export default new Vuex.Store({
   state: {
-    userInfo: null,
-    isLogin: false,
+    user: null
   },
-  getters: {},
   mutations: {
-    loginSuccess(state, payload) {
-      state.isLogin = true;
-      state.userInfo = payload;
-    },
-    logout(state) {
-      state.isLogin = false;
-      state.userInfo = null;
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+    SET_USER_DATA(state, userData) {
+      state.user = userData;
+      localStorage.setItem("user", JSON.stringify(userData));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${userData.access_token}`;
     }
   },
   actions: {
-    getAccountInfo({commit}) {
-      let token = localStorage.getItem("accessToken");
-      Axios.get("/api/userinfo", {
-        headers: {
-          "X-AUTH-TOKEN": token
-        }
-      })
-        .then((res) => {
-          commit("loginSucess", res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
+    register({commit}, credentials) {
+      return axios.post("//localhost:8000/auth/login/", credentials).then(
+        ({data}) => {
+          commit("SET_USER_DATA", data);
         });
     }
-  },
+  }
 });
+

@@ -1,20 +1,8 @@
 <template>
-  <v-app>
+  <div>
     <v-main>
-      <NavBar/>
-      <nuxt></nuxt>
+      <HomeMain></HomeMain>
     </v-main>
-  </v-app>
+  </div>
 </template>
-<script>
-import NavBar from "../layout/NavBar";
-
-export default {
-  name: "home",
-  components: {
-    NavBar,
-  }
-};
-
-</script>
 

@@ -8,8 +8,8 @@
     </v-list>
     <v-list v-for="item in items_not_login" v-show="!loggedIn" v-bind:key="item">
       <v-list-item>
-        <router-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
-        </router-link>
+        <NuxtLink :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
+        </NuxtLink>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

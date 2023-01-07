@@ -1,16 +1,13 @@
 <template>
-  <v-app>
-    <v-main>
-      <NavBar></NavBar>
-      <HomeMainSign></HomeMainSign>
-    </v-main>
-  </v-app>
+  <v-main>
+    <HomeMainSign></HomeMainSign>
+  </v-main>
 </template>
 <script>
-import NavBar from "../../layout/NavBar";
+import HomeMainSign from "../../components/HomeMainSign";
 
 export default {
   name: "sign",
-  components: {NavBar}
+  components: {HomeMainSign}
 };
 </script>

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import Axios from "../api/default";
+import store from "../store";
 
 export default {
   name: "HomeLog",
@@ -60,15 +60,12 @@ export default {
 
   methods: {
     onSubmit() {
-      Axios.post("/auth/", {
+      store.dispatch("register", {
         email: this.email,
-        password: this.password,
+        password: this.password
       })
         .then(res => {
-          this.$store.commit("setUserEmail", this.email);
-          console.log(res);
-        }, err => {
-          console.log(err);
+          this.$nuxt.router.push({name: "/"});
         });
     },
     required(v) {
