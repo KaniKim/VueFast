@@ -31,6 +31,7 @@ async def get_token(user: UserAuth, db: Session = Depends(get_db)):
     )
 
     return {
+        "email": user.email,
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",

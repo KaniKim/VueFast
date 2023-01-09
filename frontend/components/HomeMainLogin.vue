@@ -60,12 +60,12 @@ export default {
 
   methods: {
     onSubmit() {
-      store.dispatch("register", {
+      store.dispatch("login", {
         email: this.email,
         password: this.password
       })
         .then(res => {
-          this.$nuxt.router.push({name: "/"});
+          this.$router.push({path: "/"});
         });
     },
     required(v) {

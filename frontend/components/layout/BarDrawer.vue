@@ -1,12 +1,14 @@
 <template>
   <v-navigation-drawer v-model="drawerOpen">
-    <v-list v-for="item in items" v-show="loggedIn" v-bind:key="item">
+    <v-list v-for="item in items" v-show="loggedInOrNot" v-bind:key="item">
       <v-list-item>
-        <nuxt-link :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
-        </nuxt-link>
+        <NuxtLink :to='{name: "jjal-id", params: { id: item.value }}'
+                  style="text-decoration: none; color: inherit;">
+          {{ item.title }}
+        </NuxtLink>
       </v-list-item>
     </v-list>
-    <v-list v-for="item in items_not_login" v-show="!loggedIn" v-bind:key="item">
+    <v-list v-for="item in items_not_login" v-show="!loggedInOrNot" v-bind:key="item">
       <v-list-item>
         <NuxtLink :to="{path: item.value}" style="text-decoration: none; color: inherit;">{{ item.title }}
         </NuxtLink>
@@ -15,27 +17,28 @@
   </v-navigation-drawer>
 </template>
 <script>
+import store from "../../store";
+
 export default {
   props: ["drawer"],
   name: "BarDrawer",
   data: () => ({
-    loggedIn: false,
     group: null,
     items: [
       {
-        title: "Korean Food",
+        title: "Korean JJAL",
         value: "kr",
       },
       {
-        title: "Chinese Food",
+        title: "Chinese JJAL",
         value: "ch",
       },
       {
-        title: "Japanese Food",
+        title: "Japanese JJAL",
         value: "jp",
       },
       {
-        title: "Western Food",
+        title: "Western JJAL",
         value: "ws",
       },
     ],
@@ -53,6 +56,9 @@ export default {
   computed: {
     drawerOpen() {
       return this.drawer;
+    },
+    loggedInOrNot() {
+      return store.state.access_token !== null;
     }
   }
 };

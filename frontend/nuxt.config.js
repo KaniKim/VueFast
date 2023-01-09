@@ -7,5 +7,8 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vuetify"]
   },
-  router: {},
+  mode: "universal",
+  generate: {
+    fallback: true
+  }
 });
