@@ -1,30 +1,6 @@
 version: '3.3'
 
 services:
-  db:
-    restart: always
-    image: postgres:11
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=fast
-    ports:
-      - 5432:5432
-
-  pgadmin:
-    image: dpage/pgadmin4
-    depends_on:
-      - db
-    ports:
-      - "80:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: kanikim@email.com
-      PGADMIN_DEFAULT_PASSWORD: 123456
-    restart: unless-stopped
-
   backend:
     restart: always
     build: 
@@ -35,8 +11,6 @@ services:
       - ./backend:/backend
     ports:
       - "8000:8000"
-    depends_on:
-      - db
 
   front:
     build: 
@@ -46,5 +20,3 @@ services:
       - 3000:3000
     volumes:
       - ./frontend:/frontend
-volumes:
-  postgres_data:
