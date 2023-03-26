@@ -5,5 +5,5 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /backend
 COPY ./ /backend/
-COPY .env /backend/.env
+COPY migrations/.env /backend/.env
 RUN pip install -r /backend/requirements.txt 
