@@ -34,7 +34,7 @@ class UserService:
         result = await self.user_repo.get_user(email=email, db=db)
 
         if result:
-            if password_service.get_password_hash(password=result.password):
+            if self.password_service.get_password_hash(password=result.password):
                 return True
             return False
         return None
