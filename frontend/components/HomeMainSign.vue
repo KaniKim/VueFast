@@ -75,7 +75,7 @@ export default {
         this.errMsg = "Please input all form";
         return;
       }
-      Axios.post("/user", {
+      Axios.post("/user/", {
         email: this.email,
         password: this.password,
         name: this.nickname,
@@ -85,7 +85,7 @@ export default {
           this.$router.push("/login");
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.data());
         });
     },
     required(v) {

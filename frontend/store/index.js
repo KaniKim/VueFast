@@ -29,7 +29,9 @@ export default new Vuex.Store({
       return Axios.post("/auth/login", credentials).then(
         (res) => {
           commit("SET_USER_DATA", res);
-        });
+        }).catch(err => {
+        console.log(err);
+      });
     },
     refresh_token({commit}) {
       return new Promise((resolve, reject) => {
