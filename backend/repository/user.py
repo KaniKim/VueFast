@@ -26,15 +26,7 @@ class BaseUserRepository(ABC):
         name: str,
         db: Session,
     ):
-        new_user = UserModel(
-            email=email,
-            name=name,
-            hashed_password=hashed_password,
-            created_at=datetime.datetime.now(),
-            updated_at=datetime.datetime.now(),
-        )
-        db.add(new_user)
-        return new_user
+        pass
 
     def get_user_by_email(self, email: str, db: Session) -> User:
         pass
@@ -73,9 +65,10 @@ class UserRepository(BaseUserRepository):
         return None
 
     async def get_user(self, email: str, db: Session) -> Optional[User]:
-        user_model = (
-            await db.execute(select(UserModel).where(UserModel.email == email))
-        ).scalar()
+
+        query = select(UserModel).where(UserModel.email == email)
+        user_model = await db.execute(query).scalar()
+
         if user_model:
             return self.ConvertToDTO(user=user_model)
         return None
@@ -97,6 +90,7 @@ class UserRepository(BaseUserRepository):
             updated_at=datetime.datetime.utcnow(),
         )
         db.add(user_model)
+
         try:
             await db.commit()
             await db.refresh(user_model)
@@ -116,9 +110,7 @@ class UserRepository(BaseUserRepository):
     async def save_refresh_token(self, email: str, token: str, db: Session) -> bool:
         if await self.get_user_by_email(email=email, db=db):
             query = update(UserModel).where(UserModel.email == email)
-            query = query.values(refresh_token=token).execution_options(
-                synchronize_session="fetch"
-            )
+            query = query.values(refresh_token=token).execution_options(synchronize_session="fetch")
             await db.execute(query)
             await db.commit()
             return True
