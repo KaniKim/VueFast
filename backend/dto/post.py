@@ -15,3 +15,4 @@ class PostResponse(PostRequest):
 class Post(PostResponse):
     comments: List[None]
     tags: List[None]
+    user_id: str

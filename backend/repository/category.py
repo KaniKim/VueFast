@@ -1,5 +1,5 @@
-from abc import ABC
 import uuid
+from abc import ABC
 from typing import List, Optional
 
 from sqlalchemy import select
@@ -50,7 +50,7 @@ class CategoryRepository(BaseCategoryRepository):
     async def get_category_by_name(self, title: str, db: Session) -> Optional[Category]:
 
         query = select(CategoryModel).where(CategoryModel.title == title)
-        category_model = await db.execute(query).scalar()
+        category_model = (await db.execute(query)).scalar()
 
         if category_model:
             return self.ConvertToDTO(category=category_model)
