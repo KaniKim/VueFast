@@ -56,6 +56,15 @@ class CategoryRepository(BaseCategoryRepository):
             return self.ConvertToDTO(category=category_model)
         return None
 
+    async def get_category_by_id(self, id: str, db: Session) -> Optional[Category]:
+
+        query = select(CategoryModel).where(CategoryModel.id == id)
+        category_model = (await db.execute(query)).scalar()
+
+        if category_model:
+            return self.ConvertToDTO(category=category_model)
+        return None
+
     async def create_category(
         self,
         title: str,
@@ -75,3 +84,5 @@ class CategoryRepository(BaseCategoryRepository):
         except SQLAlchemyError as error:
             db.rollback()
             raise error
+
+        return self.ConvertToDTO(category_model)

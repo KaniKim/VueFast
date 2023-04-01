@@ -9,7 +9,7 @@ class UserService:
     password_service = Password()
 
     async def create_user(self, password: str, email: str, name: str, db: Session):
-        query_result = await self.user_repo.get_user(email=email, db=db)
+        query_result = await self.user_repo.get_user_by_email(email=email, db=db)
 
         if query_result:
             return None

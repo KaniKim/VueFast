@@ -16,7 +16,7 @@ class BaseUserRepository(ABC):
     def get_user_all(self, db: Session) -> List[User]:
         pass
 
-    def get_user(self, email: str, db: Session) -> User:
+    def get_user_by_id(self, id: str, db: Session) -> User:
         pass
 
     def create_user(
@@ -64,9 +64,9 @@ class UserRepository(BaseUserRepository):
             return [self.ConvertToDTO(res) for res in result]
         return None
 
-    async def get_user(self, email: str, db: Session) -> Optional[User]:
+    async def get_user_by_id(self, id: str, db: Session) -> Optional[User]:
 
-        query = select(UserModel).where(UserModel.email == email)
+        query = select(UserModel).where(UserModel.id == id)
         user_model = (await db.execute(query)).scalar()
 
         if user_model:
