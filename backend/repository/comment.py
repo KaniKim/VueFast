@@ -21,7 +21,7 @@ class BaseCommentRepository(ABC):
     def get_comments_by_postId(self, db: Session, post_id: str) -> Optional[List[Comment]]:
         pass
 
-    def create_comment(self, db: Session, content: str, post_id: str) -> Comment:
+    def create_comment(self, db: Session, content: str, post_id: str, user_id: str) -> Comment:
         pass
 
     def delete_comments_by_id(self, db: Session, id: str) -> bool:
@@ -79,10 +79,13 @@ class CommentRepository(BaseCommentRepository):
             db.rollback()
             raise error
 
-    async def create_comment(self, db: Session, content: str, user_id: str) -> Comment:
+    async def create_comment(
+        self, db: Session, content: str, user_id: str, post_id: str
+    ) -> Comment:
         comment_model = CommentModel(
             id=uuid.uuid4(),
             content=content,
+            posts_id=post_id,
             user_id=user_id,
             like=0,
         )

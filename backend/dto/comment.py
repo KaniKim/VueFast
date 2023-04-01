@@ -11,3 +11,4 @@ class CommentResponse(CommentRequest):
 
 class Comment(CommentResponse):
     user_id: str
+    posts_id: str
