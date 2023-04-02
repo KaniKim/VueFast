@@ -5,9 +5,9 @@ from pydantic import BaseModel
 from dto.post import Post
 
 
-class CategoryRequest(BaseModel):
+class CategoryRequestResponse(BaseModel):
     title: str
 
 
-class Category(CategoryRequest):
+class Category(CategoryRequestResponse):
     posts_id: List[Post]

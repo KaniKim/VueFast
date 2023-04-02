@@ -31,7 +31,7 @@ class UserService:
         return True
 
     async def check_login_user(self, email: str, db: Session):
-        result = await self.user_repo.get_user(email=email, db=db)
+        result = await self.user_repo.get_user_by_email(email=email, db=db)
 
         if result:
             if self.password_service.get_password_hash(password=result.password):

@@ -1,9 +1,10 @@
 import datetime
 
+from dto.auth import TokenData
 from repository.user import UserRepository
 
-from fastapi import Depends, HTTPException, status
-from pydantic import BaseSettings, BaseModel
+from fastapi import HTTPException, status
+from pydantic import BaseSettings
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
@@ -50,24 +51,18 @@ class Auth:
                 minutes=self.ACCESS_TOKEN_EXPIRE_MINUTES
             )
             to_encode.update({"exp": expire})
-            encoded_jwt = jwt.encode(
-                to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM
-            )
+            encoded_jwt = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
         else:
             expire = datetime.datetime.utcnow() + datetime.timedelta(
                 minutes=self.REFRESH_TOKEN_EXPIRE_MINUTES
             )
             to_encode.update({"exp": expire})
-            encoded_jwt = jwt.encode(
-                to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM
-            )
-            await self.user_repo.save_refresh_token(
-                email=data["email"], token=encoded_jwt, db=db
-            )
+            encoded_jwt = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
+            await self.user_repo.save_refresh_token(email=data["email"], token=encoded_jwt, db=db)
 
         return encoded_jwt
 
-    async def get_current_user(self, token: str):
+    async def get_current_user(self, token: str, db: Session):
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -85,4 +80,8 @@ class Auth:
         except JWTError:
             raise credentials_exception
 
-        return None
+        user = self.user_repo.get_user_by_email(email=token_data.username, db=db)
+
+        if not user:
+            return None
+        return user
