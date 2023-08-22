@@ -1,14 +1,30 @@
-import {defineNuxtConfig} from "nuxt/config";
-
-export default defineNuxtConfig({
-  css: [
-    "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css",
+export default {
+  modules: [
+    "@nuxtjs/tailwindcss"
   ],
-  build: {
-    transpile: ["vuetify"]
+  css: [
+    "~/assets/css/style.css"
+  ],
+  tailwindcss: {
+    cssPath: "~/assets/css/style.css",
+    configPath: "tailwind.config",
+    exposeConfig: false,
+    injectPosition: 0,
+    viewer: true,
   },
-  mode: "universal",
-  generate: {
-    fallback: true
-  }
-});
+  buildModules: [
+    [
+      "@nuxtjs/tailwindcss",
+      "@nuxt/typescript-build",
+      {
+        typeCheck: {
+          typescript: {
+            extensions: {
+              vue: true
+            }
+          }
+        }
+      }
+    ]
+  ]
+};

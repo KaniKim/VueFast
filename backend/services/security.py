@@ -4,7 +4,7 @@ from dto.auth import TokenData
 from repository.user import UserRepository
 
 from fastapi import HTTPException, status
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
@@ -16,9 +16,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: str = "ACCESS_TOKEN_EXPIRE_MINUTES"
     REFRESH_TOKEN_EXPIRE_MINUTES: str = "REFRESH_TOKEN_EXPIRE_MINUTES"
 
-    class Config:
-        env_file = ".env"
-
+    model_config = SettingsConfigDict(env_file=".env_secret")
 
 class Password:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

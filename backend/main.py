@@ -1,11 +1,9 @@
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api import user, auth
 
 app = FastAPI()
-app.router.redirect_slashes = False
 
 origins = [
     "http://localhost:3000",

@@ -1,9 +1,9 @@
 {
-  "_hash": "Z9WOftjJUU",
+  "_hash": "66kO79pRON",
   "project": {
-    "rootDir": "/Users/kani/VueFast/frontend"
+    "rootDir": "/home/kani/VueFast/frontend"
   },
   "versions": {
-    "nuxt": "3.0.0"
+    "nuxt": "3.6.5"
   }
 }

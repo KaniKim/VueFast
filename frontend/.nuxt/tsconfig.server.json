@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "paths": {
+      "#imports": [
+        "/home/kani/VueFast/frontend/.nuxt/types/nitro-imports"
+      ],
+      "#paths": [
+        "/home/kani/VueFast/frontend/node_modules/nuxt/dist/core/runtime/nitro/paths"
+      ],
+      "~": [
+        "/home/kani/VueFast/frontend"
+      ],
+      "~/*": [
+        "/home/kani/VueFast/frontend/*"
+      ],
+      "@": [
+        "/home/kani/VueFast/frontend"
+      ],
+      "@/*": [
+        "/home/kani/VueFast/frontend/*"
+      ],
+      "~~": [
+        "/home/kani/VueFast/frontend"
+      ],
+      "~~/*": [
+        "/home/kani/VueFast/frontend/*"
+      ],
+      "@@": [
+        "/home/kani/VueFast/frontend"
+      ],
+      "@@/*": [
+        "/home/kani/VueFast/frontend/*"
+      ],
+      "assets": [
+        "/home/kani/VueFast/frontend/assets"
+      ],
+      "assets/*": [
+        "/home/kani/VueFast/frontend/assets/*"
+      ],
+      "public": [
+        "/home/kani/VueFast/frontend/public"
+      ],
+      "public/*": [
+        "/home/kani/VueFast/frontend/public/*"
+      ]
+    }
+  },
+  "include": [
+    "/home/kani/VueFast/frontend/.nuxt/types/nitro-nuxt.d.ts",
+    "./types/nitro.d.ts",
+    "../**/*",
+    "../server/**/*"
+  ]
+}

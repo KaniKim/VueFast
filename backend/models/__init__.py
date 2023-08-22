@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -6,9 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URL: str = "SQLALCHEMY_DATABASE_URL"
-
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env_fast")
 
 
 SQLALCHEMY_DATABASE_URL = Settings().SQLALCHEMY_DATABASE_URL
